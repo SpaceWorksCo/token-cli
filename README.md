@@ -12,47 +12,47 @@ cd ~/token-cli
 
 ./token-cli method
 ```
-Please note: anywhere you see `token`, it's looking for the `tokenid` (txid from the token creation). If you wish to use the abbreviation such as `SWTT` (SpaceWorks Test Token) you must add your token to the [token list](https://github.com/SpaceWorksCo/token-cli/blob/master/token-cli#13).
+Please note: anywhere you see `token`, it's looking for the `tokenid` (txid from the token creation). If you wish to use the abbreviation such as `SWTT` (SpaceWorks Test Token) you must add your token to the [token list](https://github.com/SpaceWorksCo/token-cli/blob/master/token-cli#L13).
 
 ## Methods
 
-#### address
+### address
 
 The `address` method returns information about a token address according to a specific pubkey. If no pubkey is provided, the pubkey used to launch the daemon is the default.
 
 `./token-cli address token [pubkey]`
 
-#### ask
+### ask
 
 The `ask` method creates an ask order for the specified token.
 
 `./token-cli ask token numtokens price`
 
-#### balance
+### balance
 
 The `balance` method checks the token balance according to a provided pubkey. If no pubkey is provided, the pubkey used to launch the daemon is the default.
 
 `./token-cli balance token [pubkey]`
 
-#### bid
+### bid
 
 The `bid` method creates a bid order for the specified token.
 
 `./token-cli bid token numtokens price`
 
-#### cancelask
+### cancelask
 
 The `cancelask` method cancels an existing ask order.
 
 `./token-cli cancelask token asktxid`
 
-#### cancelbid
+### cancelbid
 
 The `cancelbid` method cancels an existing bid order.
 
 `./token-cli cancelbid token bidtxid`
 
-#### create
+### create
 
 The `create` method creates a new token. For every token created, the method requires one satoshi of SPACE's coins. For example, 1 SPACE provides 100000000 tokens.
 
@@ -60,43 +60,43 @@ The returned txid is your tokenid.
 
 `./token-cli create name supply [description] [data]`
 
-#### fillask
+### fillask
 
 The `fillask` method fills an open ask order.
 
 `./token-cli fillask token asktxid fillunits`
 
-#### fillbid
+### fillbid
 
 The `fillbid` method fills an open bid order.
 
 `./token-cli fillbid token bidtxid fillunits`
 
-#### info
+### info
 
 The `info` method reveals information about any token.
 
 `./token-cli info token`
 
-#### list
+### list
 
 The `list` method lists all available tokens on the SPACE chain.
 
 `./token-cli list`
 
-#### myorders
+### myorders
 
 The `myorders` method lists all of your token orders on the SPACE chain.
 
 `./token-cli myorders`
 
-#### orders
+### orders
 
 The `orders` method shows the orders for a specified token.
 
 `./token-cli orders token`
 
-#### transfer
+### transfer
 
 The `transfer` method sends tokens from one address to another.
 
