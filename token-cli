@@ -37,7 +37,9 @@ elif [[ "$1" == "ask" ]]; then
   fi
   numtokens=$3
   price=$4
-  $spacecli tokenask $numtokens $token $price
+  txhex=$($spacecli tokenask $numtokens $token $price | jq -r '.hex')
+  ask=$($spacecli sendrawtransaction $txhex)
+  echo "$ask"
 
 # tokenbalance - http://spacecoin-rpc.spaceworks.co/tokenbalance.html
 elif [[ "$1" == "balance" ]]; then
@@ -56,7 +58,9 @@ elif [[ "$1" == "bid" ]]; then
   fi
   numtokens=$3
   price=$4
-  $spacecli tokenbid $numtokens $token $price
+  txhex=$($spacecli tokenbid $numtokens $token $price | jq -r '.hex')
+  bid=$($spacecli sendrawtransaction $txhex)
+  echo "$bid"
 
 # tokencancelask - http://spacecoin-rpc.spaceworks.co/tokencancelask.html
 elif [[ "$1" == "cancelask" ]]; then
@@ -65,7 +69,9 @@ elif [[ "$1" == "cancelask" ]]; then
         exit 0
   fi
   asktxid=$3
-  $spacecli tokencancelask $token $asktxid
+  txhex=$($spacecli tokencancelask $token $asktxid | jq -r '.hex')
+  cancelask=$($spacecli sendrawtransaction $txhex)
+  echo "$cancelask"
 
 # tokencancelbid - http://spacecoin-rpc.spaceworks.co/tokencancelbid.html
 elif [[ "$1" == "cancelbid" ]]; then
@@ -74,7 +80,9 @@ elif [[ "$1" == "cancelbid" ]]; then
         exit 0
   fi
   bidtxid=$3
-  $spacecli tokencancelbid $token $bidtxid
+  txhex=$($spacecli tokencancelbid $token $bidtxid | jq -r '.hex')
+  cancelbid=$($spacecli sendrawtransaction $txhex)
+  echo "$cancelbid"
 
 #tokencreate - http://spacecoin-rpc.spaceworks.co/tokencreate.html
 elif [[ "$1" == "create" ]]; then
@@ -87,8 +95,8 @@ elif [[ "$1" == "create" ]]; then
   description=$4
   data=$5
   txhex=$($spacecli tokencreate $name $supply $description $data | jq -r '.hex')
-  transfer=$($spacecli sendrawtransaction $txhex)
-  echo "$transfer"
+  create=$($spacecli sendrawtransaction $txhex)
+  echo "$create"
 
 # tokenfillask - http://spacecoin-rpc.spaceworks.co/tokenfillask.html
 elif [[ "$1" == "fillask" ]]; then
@@ -98,7 +106,9 @@ elif [[ "$1" == "fillask" ]]; then
   fi
   asktxid=$3
   fillunits=$4
-  $spacecli tokenfillask $token $asktxid $fillunits
+  txhex=$($spacecli tokenfillask $token $asktxid $fillunits | jq -r '.hex')
+  fillask=$($spacecli sendrawtransaction $txhex)
+  echo "$fillask"
 
 # tokenfillbid - http://spacecoin-rpc.spaceworks.co/tokenfillbid.html
 elif [[ "$1" == "fillbid" ]]; then
@@ -108,7 +118,9 @@ elif [[ "$1" == "fillbid" ]]; then
   fi
   bidtxid=$3
   fillunits=$4
-  $spacecli tokenfillbid $token $bidtxid $fillunits
+  txhex=$($spacecli tokenfillbid $token $bidtxid $fillunits | jq -r '.hex')
+  fillbid=$($spacecli sendrawtransaction $txhex)
+  echo "$fillbid"
 
 # tokeninfo - http://spacecoin-rpc.spaceworks.co/tokeninfo.html
 elif [[ "$1" == "info" ]]; then
