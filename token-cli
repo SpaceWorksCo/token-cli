@@ -6,7 +6,9 @@ spacepath=${HOME}/spacecoin/src
 spacecli=./spacecoin-cli
 
 if [[ -z $1 ]]; then
-      echo "./token-cli method"
+      echo ""
+      echo "  Run './token-cli help' to list available methods."
+      echo ""
       exit 0
 fi
 
@@ -23,71 +25,99 @@ cd && cd $spacepath
 # tokenaddress - http://spacecoin-rpc.spaceworks.co/tokenaddress.html
 if [[ "$1" == "address" ]]; then
   if [[ -z $2 ]]; then
-        echo "./token-cli address token [pubkey]"
+        echo ""
+        echo "  ./token-cli address token [pubkey]"
+        echo ""
         exit 0
   fi
   pubkey=$3
-  $spacecli tokenaddress $token $pubkey
+  address=$($spacecli tokenaddress $token $pubkey)
+  echo ""
+  echo "$address"
+  echo ""
 
 # tokenask - http://spacecoin-rpc.spaceworks.co/tokenask.html
 elif [[ "$1" == "ask" ]]; then
   if [[ -z $2 ]] || [[ -z $3 ]] || [[ -z $4 ]]; then
-        echo "./token-cli ask token numtokens price"
+        echo ""
+        echo "  ./token-cli ask token numtokens price"
+        echo ""
         exit 0
   fi
   numtokens=$3
   price=$4
   txhex=$($spacecli tokenask $numtokens $token $price | jq -r '.hex')
   ask=$($spacecli sendrawtransaction $txhex)
+  echo ""
   echo "$ask"
+  echo ""
 
 # tokenbalance - http://spacecoin-rpc.spaceworks.co/tokenbalance.html
 elif [[ "$1" == "balance" ]]; then
   if [[ -z $2 ]]; then
-        echo "./token-cli balance token [pubkey]"
+        echo ""
+        echo "  ./token-cli balance token [pubkey]"
+        echo ""
         exit 0
   fi
   pubkey=$3
-  $spacecli tokenbalance $token $pubkey
+  balance=$($spacecli tokenbalance $token $pubkey)
+  echo ""
+  echo "$balance"
+  echo ""
 
 # tokenbid - http://spacecoin-rpc.spaceworks.co/tokenbid.html
 elif [[ "$1" == "bid" ]]; then
   if [[ -z $2 ]] || [[ -z $3 ]] || [[ -z $4 ]]; then
-        echo "./token-cli bid token numtokens price"
+        echo ""
+        echo "  ./token-cli bid token numtokens price"
+        echo ""
         exit 0
   fi
   numtokens=$3
   price=$4
   txhex=$($spacecli tokenbid $numtokens $token $price | jq -r '.hex')
   bid=$($spacecli sendrawtransaction $txhex)
+  echo ""
   echo "$bid"
+  echo ""
 
 # tokencancelask - http://spacecoin-rpc.spaceworks.co/tokencancelask.html
 elif [[ "$1" == "cancelask" ]]; then
   if [[ -z $2 ]] || [[ -z $3 ]]; then
-        echo "./token-cli cancelask token asktxid"
+        echo ""
+        echo "  ./token-cli cancelask token asktxid"
+        echo ""
         exit 0
   fi
   asktxid=$3
   txhex=$($spacecli tokencancelask $token $asktxid | jq -r '.hex')
   cancelask=$($spacecli sendrawtransaction $txhex)
+  echo ""
   echo "$cancelask"
+  echo ""
 
 # tokencancelbid - http://spacecoin-rpc.spaceworks.co/tokencancelbid.html
 elif [[ "$1" == "cancelbid" ]]; then
   if [[ -z $2 ]] || [[ -z $3 ]]; then
-        echo "./token-cli cancelbid token asktxid"
+        echo ""
+        echo "  ./token-cli cancelbid token asktxid"
+        echo ""
         exit 0
   fi
   bidtxid=$3
   txhex=$($spacecli tokencancelbid $token $bidtxid | jq -r '.hex')
   cancelbid=$($spacecli sendrawtransaction $txhex)
+  echo ""
   echo "$cancelbid"
+  echo ""
 
 #tokencreate - http://spacecoin-rpc.spaceworks.co/tokencreate.html
 elif [[ "$1" == "create" ]]; then
   if [[ -z $2 ]] || [[ -z $3 ]] || [[ -z $4 ]] || [[ -z $5 ]]; then
-        echo "./token-cli create name supply [description] [data]"
+        echo ""
+        echo "  ./token-cli create name supply [description] [data]"
+        echo ""
         exit 0
   fi
   name=$2
@@ -96,65 +126,114 @@ elif [[ "$1" == "create" ]]; then
   data=$5
   txhex=$($spacecli tokencreate $name $supply $description $data | jq -r '.hex')
   create=$($spacecli sendrawtransaction $txhex)
+  echo ""
   echo "$create"
+  echo ""
+
+# help
+elif [[ "$1" == "help" ]]; then
+    echo ""
+    echo "  address"
+    echo "  ask"
+    echo "  balance"
+    echo "  bid"
+    echo "  cancelask"
+    echo "  cancelbid"
+    echo "  create"
+    echo "  fillask"
+    echo "  fillbid"
+    echo "  info"
+    echo "  list"
+    echo "  myorders"
+    echo "  orders"
+    echo "  transfer"
+    echo ""
 
 # tokenfillask - http://spacecoin-rpc.spaceworks.co/tokenfillask.html
 elif [[ "$1" == "fillask" ]]; then
   if [[ -z $2 ]] || [[ -z $3 ]] || [[ -z $4 ]]; then
-        echo "./token-cli fillask token asktxid fillunits"
+        echo ""
+        echo "  ./token-cli fillask token asktxid fillunits"
+        echo ""
         exit 0
   fi
   asktxid=$3
   fillunits=$4
   txhex=$($spacecli tokenfillask $token $asktxid $fillunits | jq -r '.hex')
   fillask=$($spacecli sendrawtransaction $txhex)
+  echo ""
   echo "$fillask"
+  echo ""
 
 # tokenfillbid - http://spacecoin-rpc.spaceworks.co/tokenfillbid.html
 elif [[ "$1" == "fillbid" ]]; then
   if [[ -z $2 ]] || [[ -z $3 ]] || [[ -z $4 ]]; then
-        echo "./token-cli fillbid token bidtxid fillunits"
+        echo ""
+        echo "  ./token-cli fillbid token bidtxid fillunits"
+        echo ""
         exit 0
   fi
   bidtxid=$3
   fillunits=$4
   txhex=$($spacecli tokenfillbid $token $bidtxid $fillunits | jq -r '.hex')
   fillbid=$($spacecli sendrawtransaction $txhex)
+  echo ""
   echo "$fillbid"
+  echo ""
 
 # tokeninfo - http://spacecoin-rpc.spaceworks.co/tokeninfo.html
 elif [[ "$1" == "info" ]]; then
   if [[ -z $2 ]]; then
-        echo "./token-cli info token"
+        echo ""
+        echo "  ./token-cli info token"
+        echo ""
         exit 0
   fi
-  $spacecli tokeninfo $token
+  info=$($spacecli tokeninfo $token)
+  echo ""
+  echo "$info"
+  echo ""
 
 # tokenlist - http://spacecoin-rpc.spaceworks.co/tokenlist.html
 elif [[ "$1" == "list" ]]; then
-  $spacecli tokenlist
+  list=$($spacecli tokenlist)
+  echo ""
+  echo "$list"
+  echo ""
 
 # mytokenorders - http://spacecoin-rpc.spaceworks.co/mytokenorders.html
 elif [[ "$1" == "myorders" ]]; then
-  $spacecli mytokenorders
+  myorders=$($spacecli mytokenorders)
+  echo ""
+  echo "$myorders"
+  echo ""
 
 # tokenorders - http://spacecoin-rpc.spaceworks.co/tokenorders.html
 elif [[ "$1" == "orders" ]]; then
   if [[ -z $2 ]]; then
-        echo "./token-cli orders token"
+        echo ""
+        echo "  ./token-cli orders [token]"
+        echo ""
         exit 0
   fi
-  $spacecli tokenorders $token
+  orders=$($spacecli tokenorders $token)
+  echo ""
+  echo "$orders"
+  echo ""
 
 # tokentransfer - http://spacecoin-rpc.spaceworks.co/tokentransfer.html
 elif [[ "$1" == "transfer" ]]; then
   if [[ -z $2 ]] || [[ -z $3 ]] || [[ -z $4 ]]; then
-        echo "./token-cli transfer token pubkey amount"
+        echo ""
+        echo "  ./token-cli transfer token pubkey amount"
+        echo ""
         exit 0
   fi
   pubkey=$3
   amount=$4
   txhex=$($spacecli tokentransfer $token $pubkey $amount | jq -r '.hex')
   transfer=$($spacecli sendrawtransaction $txhex)
+  echo ""
   echo "$transfer"
+  echo ""
 fi
